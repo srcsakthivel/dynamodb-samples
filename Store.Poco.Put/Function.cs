@@ -10,13 +10,6 @@ namespace Store.Poco.Put;
 
 public class Function
 {
-
-    /// <summary>
-    /// A simple function that takes a string and does a ToUpper
-    /// </summary>
-    /// <param name="input"></param>
-    /// <param name="context"></param>
-    /// <returns></returns>
     public async Task<string> FunctionHandler(string input, ILambdaContext context)
     {
         try
@@ -31,7 +24,7 @@ public class Function
             // Create a DynamoDB Context Object
             var dynamoDBContext = new DynamoDBContext(amazonDynamoDBClient);
 
-            // Create a Sports Item POCO object and save it to the DynamoDB table
+            // Create a Store Item POCO object and save it to the DynamoDB table
             var sportsItemPoco = new StorePoco
             {
                 Id = "3",

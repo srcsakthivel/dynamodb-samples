@@ -8,8 +8,8 @@ namespace Store.Api.Model
         public string Id { get; set; }
 
         [DynamoDBProperty("Name")]
-        public string AlbumName { get; set; }
-        public string Artist { get; set; }
-        public string ReleaseDate { get; set; }
+        public string? AlbumName { get; set; }
+        public string? Artist { get; set; }
+        public string? ReleaseDate { get; set; }
     }
 }
