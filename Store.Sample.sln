@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Poco.Get", "Store.Poc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Poco.Put", "Store.Poco.Put\Store.Poco.Put.csproj", "{6A46C2AE-3400-4D0B-BA2C-A23E83A7ED89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Api", "Store.Api\Store.Api.csproj", "{51DAD500-39BB-49D2-A71C-6658A85DB20E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{6A46C2AE-3400-4D0B-BA2C-A23E83A7ED89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A46C2AE-3400-4D0B-BA2C-A23E83A7ED89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A46C2AE-3400-4D0B-BA2C-A23E83A7ED89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51DAD500-39BB-49D2-A71C-6658A85DB20E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51DAD500-39BB-49D2-A71C-6658A85DB20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51DAD500-39BB-49D2-A71C-6658A85DB20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51DAD500-39BB-49D2-A71C-6658A85DB20E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
