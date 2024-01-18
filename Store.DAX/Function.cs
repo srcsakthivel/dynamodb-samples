@@ -1,22 +1,25 @@
+using Amazon.DAX;
 using Amazon.DynamoDBv2.Model;
 using Amazon.DynamoDBv2;
 using Amazon.Lambda.Core;
+using Amazon.Runtime;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
-namespace Store.Lowlevel.Get;
+namespace Store.DAX;
 
 public class Function
 {
     public async Task<string> FunctionHandler(string input, ILambdaContext context)
     {
-        // Configure the DynamoDB Client
-        var amazonDynamoDBConfig = new AmazonDynamoDBConfig
+        var endpointUri = "dax://my-cluster.123abc.dax-clusters.us-east-1.amazonaws.com";
+
+        var clientConfig = new DaxClientConfig(endpointUri)
         {
-            RegionEndpoint = Amazon.RegionEndpoint.USEast1
+            AwsCredentials = FallbackCredentialsFactory.GetCredentials()
         };
-        AmazonDynamoDBClient amazonDynamoDBClient = new AmazonDynamoDBClient(amazonDynamoDBConfig);
+        var client = new ClusterDaxClient(clientConfig);
 
         // Prepare the request object
         var getItemRequest = new GetItemRequest
@@ -32,8 +35,8 @@ public class Function
         };
 
         // Call AWS DynamoDB API
-        var getItemResponse = await amazonDynamoDBClient.GetItemAsync(getItemRequest);
+        var getItemResponse = await client.GetItemAsync(getItemRequest);
 
-        return getItemResponse.HttpStatusCode == System.Net.HttpStatusCode.OK  && getItemResponse.Item.Count > 0 ? getItemResponse.Item["Name"].S : "Empty";
+        return getItemResponse.HttpStatusCode == System.Net.HttpStatusCode.OK && getItemResponse.Item.Count > 0 ? getItemResponse.Item["Name"].S : "Empty";
     }
 }

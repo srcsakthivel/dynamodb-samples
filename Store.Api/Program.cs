@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 
 //Learn more about the https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-netcore.html
-// Read congigurations from the application Settings
+// Read configurations from the application Settings
 var awsOptions = builder.Configuration.GetAWSOptions();
 builder.Services.AddDefaultAWSOptions(awsOptions);
 
