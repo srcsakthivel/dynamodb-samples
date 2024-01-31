@@ -1,9 +1,11 @@
-﻿using Amazon.DynamoDBv2.DataModel;
+using Amazon.Auth.AccessControlPolicy;
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Store.Api.Model;
+using Store.API.Model;
 
-namespace Store.Api.Controllers
+namespace Store.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -18,19 +20,19 @@ namespace Store.Api.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IEnumerable<StoreModel> Get()
-        {
-            return _dynamoDbContext.ScanAsync<StoreModel>(default).GetRemainingAsync().Result;
-        }
-
         [HttpPost]
         public async Task<HttpResponseMessage> Post(StoreModel storeModel)
         {
+            if (storeModel == null)
+            {
+                return new HttpResponseMessage
+                {
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
+            }
             try
             {
-                _dynamoDbContext.SaveAsync<StoreModel>(storeModel);
-
+                await _dynamoDbContext.SaveAsync<StoreModel>(storeModel);
                 return new HttpResponseMessage
                 {
                     StatusCode = System.Net.HttpStatusCode.Created
@@ -46,9 +48,26 @@ namespace Store.Api.Controllers
             }
         }
 
+        [HttpGet("{Id}")]
+        public async Task<StoreModel> GetItem(string Id)
+        {
+            try
+            {
+                var loadItem = await _dynamoDbContext.LoadAsync<StoreModel>(Id);
+                return loadItem;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(exception: ex, message: ex.Message);
+                return null;
+            }            
+            
+        }
+
         [HttpPut]
         public async Task<HttpResponseMessage> PutItem(StoreModel storeModel)
         {
+            // Update Item 
             try
             {
                 var loadItem = await _dynamoDbContext.LoadAsync<StoreModel>(storeModel.Id);
@@ -62,7 +81,6 @@ namespace Store.Api.Controllers
                 };
 
                 await _dynamoDbContext.SaveAsync<StoreModel>(updateItem);
-
                 return new HttpResponseMessage
                 {
                     StatusCode = System.Net.HttpStatusCode.Accepted
@@ -76,10 +94,9 @@ namespace Store.Api.Controllers
                     StatusCode = System.Net.HttpStatusCode.InternalServerError
                 };
             }
-
         }
 
-        [HttpDelete]
+        [HttpDelete("{Id}")]
         public async Task<HttpResponseMessage> DeleteItem(string Id)
         {
             try
@@ -100,10 +117,6 @@ namespace Store.Api.Controllers
             }
         }
 
-        [HttpGet("{Id}")]
-        public async Task<StoreModel> GetItem(string Id)
-        {
-            return _dynamoDbContext.LoadAsync<StoreModel>(Id).Result;
-        }
+        
     }
 }
